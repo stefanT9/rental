@@ -1,13 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AuthStore from "./store/authStore";
+import LoginPage from "./pages/login";
+import MyRentalsPage from "./pages/myRentals";
+import CarsStore from "./store/carsStore";
+import CarsPage from "./pages/cars";
+import MyRentalsStore from "./store/myRentalsStore";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <AuthStore>
+        <CarsStore>
+          <MyRentalsStore>
+            <BrowserRouter>
+              <Routes>
+                <Route index path="/login" element={<LoginPage />} />
+                <Route path="/myRentals" element={<MyRentalsPage />} />
+                <Route path="/cars" element={<CarsPage />} />
+              </Routes>
+            </BrowserRouter>
+          </MyRentalsStore>
+        </CarsStore>
+      </AuthStore>
+    </LocalizationProvider>
   </React.StrictMode>
 );
 
