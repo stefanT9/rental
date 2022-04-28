@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 const defaultRentals = [
@@ -25,23 +25,41 @@ const defaultRentals = [
 export const MyRentalsContext = createContext({});
 
 const MyRentalsStore = ({ children }) => {
-  const [rentals, setRentals] = useState(defaultRentals);
+  const rentalsLocal = localStorage.getItem("rentals");
+  const [rentals, setRentals] = useState(
+    rentalsLocal
+      ? JSON.parse(rentalsLocal).map((rental) => ({
+          ...rental,
+          from: new Date(rental.from),
+          to: new Date(rental.to),
+        }))
+      : defaultRentals
+  );
+
+  useEffect(() => {}, []);
+  useEffect(() => {
+    localStorage.setItem("rentals", JSON.stringify(rentals));
+  }, [rentals]);
 
   const removeRental = (rental) => {
     setRentals((prevRentals) =>
       prevRentals.filter(({ id }) => id !== rental.id)
     );
-    axios.post(`/payment/cancel?id=${rental.id}`);
+    axios
+      .post(`/payment/cancel?id=${rental.id}`)
+      .catch((err) => console.log(err));
   };
 
   const insertRental = (rental, user, ammount) => {
     setRentals((prevRentals) => [...prevRentals, { id: uuid(), ...rental }]);
 
-    axios.post("/payment/add", {
-      type: "rental",
-      customer: user.email,
-      ammount: ammount,
-    });
+    axios
+      .post("/payment/add", {
+        type: "rental",
+        customer: user.email,
+        ammount: ammount,
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

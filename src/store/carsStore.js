@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 
 const defaultCars = [
   {
@@ -46,7 +46,14 @@ const defaultCars = [
 export const CarsContext = createContext({});
 
 const CarsStore = ({ children }) => {
-  const [cars, setCars] = useState(defaultCars);
+  const carsLocal = localStorage.getItem("cars");
+  const [cars, setCars] = useState(
+    carsLocal ? JSON.parse(carsLocal) : defaultCars
+  );
+
+  useEffect(() => {
+    localStorage.setItem("cars", JSON.stringify(cars));
+  }, [cars]);
 
   return (
     <CarsContext.Provider value={{ cars }}>{children}</CarsContext.Provider>

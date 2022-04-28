@@ -10,6 +10,8 @@ import CarsPage from "./pages/cars";
 import MyRentalsStore from "./store/myRentalsStore";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import Layout from "./pages/layout";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -19,11 +21,14 @@ root.render(
         <CarsStore>
           <MyRentalsStore>
             <BrowserRouter>
-              <Routes>
-                <Route index path="/login" element={<LoginPage />} />
-                <Route path="/myRentals" element={<MyRentalsPage />} />
-                <Route path="/cars" element={<CarsPage />} />
-              </Routes>
+              <Layout>
+                <Routes>
+                  <Route index path="/" element={<MyRentalsPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/myRentals" element={<MyRentalsPage />} />
+                  <Route path="/cars" element={<CarsPage />} />
+                </Routes>
+              </Layout>
             </BrowserRouter>
           </MyRentalsStore>
         </CarsStore>

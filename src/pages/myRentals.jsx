@@ -27,6 +27,7 @@ const MyRentalsPage = () => {
       <Grid container spacing={2}>
         {rentals.map((rental) => {
           const car = cars.find(({ id }) => id === rental.carId);
+          console.log(rental);
           return (
             <Grid item xs={4}>
               <Card>
@@ -42,7 +43,7 @@ const MyRentalsPage = () => {
                   </Typography>
 
                   <Typography gutterBottom variant="h5" component="div">
-                    {`${rental.from} - ${rental.to}`}
+                    {`${rental.from.toDateString()} - ${rental.to.toDateString()}`}
                   </Typography>
                 </CardContent>
                 <CardActions>

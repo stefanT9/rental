@@ -1,19 +1,29 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 
 export const AuthContext = createContext({});
 const AuthStore = ({ children }) => {
-  const [user, setUser] = useState({
-    email: "",
-    token: "",
-  });
+  const userLocal = localStorage.getItem("user");
+  const [user, setUser] = useState(
+    userLocal
+      ? JSON.parse(userLocal)
+      : {
+          email: "",
+          token: "",
+        }
+  );
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
+
   const signIn = (email, password) => {
     setUser({
       email,
       token: uuid(),
     });
   };
-  const signOut = () => {
+  const logout = () => {
     setUser({
       email: "",
       token: "",
@@ -21,7 +31,7 @@ const AuthStore = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, signIn, logout }}>
       {children}
     </AuthContext.Provider>
   );
