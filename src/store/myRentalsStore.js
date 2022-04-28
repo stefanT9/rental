@@ -5,20 +5,20 @@ const defaultRentals = [
   {
     id: 1,
     carId: 1,
-    from: "18.03.2022",
-    to: "20.03.2022",
+    from: new Date("18.03.2022"),
+    to: new Date("20.03.2022"),
   },
   {
     id: 2,
     carId: 3,
-    from: "25.03.2022",
-    to: "27.03.2022",
+    from: new Date("25.03.2022"),
+    to: new Date("27.03.2022"),
   },
   {
     id: 3,
     carId: 5,
-    from: "27.03.2022",
-    to: "27.03.2022",
+    from: new Date("27.03.2022"),
+    to: new Date("27.03.2022"),
   },
 ];
 
@@ -36,7 +36,6 @@ const MyRentalsStore = ({ children }) => {
       : defaultRentals
   );
 
-  useEffect(() => {}, []);
   useEffect(() => {
     localStorage.setItem("rentals", JSON.stringify(rentals));
   }, [rentals]);
